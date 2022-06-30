@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import Image from "next/image";
-import BigNumber from "bignumber.js";
 import { CLATokenContract } from "../constants/Address";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -21,16 +19,13 @@ export default function FreezeAmount() {
     setClaFreezeInputAmount(ClaInputAmount);
   };
 
-  async function getCLABalance() {
+  (async function getCLABalance() {
     const currentCLA = await CLATokenContract.methods
       .balanceOf(ConnectAddress)
       .call();
     const CLA = currentCLA / 10 ** 18;
     setClaBalance(CLA);
-  }
-  useEffect(() => {
-    getCLABalance();
-  }, []);
+  })();
 
   return (
     <section>

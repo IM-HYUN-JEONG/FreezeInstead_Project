@@ -1,7 +1,7 @@
 import { Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import { ConnectAddressState, IsLogInState } from "../atoms";
 import { useRecoilValue } from "recoil";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FreezeNFTContract, SaleTokenContract } from "../constants/Address";
 import TokenList from "../components/TokenList";
 import Notlogin from "../constants/Notlogin";
@@ -13,13 +13,9 @@ export default function NftList() {
   const [nftlist, setNftlist] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    saveMyToken();
-  }, []);
-
   let arr = [];
 
-  async function saveMyToken() {
+  (async function saveMyToken() {
     const totalSupply = await FreezeNFTContract.methods.totalSupply().call();
 
     for (let i = 0; i <= totalSupply - 1; i++) {
@@ -74,7 +70,7 @@ export default function NftList() {
       }
     }
     setIsLoading(false);
-  }
+  })();
 
   return (
     <>
