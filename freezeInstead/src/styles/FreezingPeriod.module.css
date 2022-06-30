@@ -1,0 +1,33 @@
+.btnBox {
+  display: flex;
+  justify-content: space-around;
+}
+.notification {
+  width: 100%;
+  border-radius: 4px;
+  justify-content: space-between;
+  display: flex;
+
+  font-size: 12px;
+  color: darkgray;
+}
+.periodItems {
+  background-color: #f5f5f5;
+  font-size: 13px;
+  width: 150px;
+  height: 150px;
+  text-align: start;
+  flex-direction: column;
+  padding: 6px;
+  cursor: pointer;
+}
+.periodItems :hover {
+  border: 2px solid #b5b5b5;
+}
+.periodItems :focus {
+  border: 2px solid #b5b5b5;
+}
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
