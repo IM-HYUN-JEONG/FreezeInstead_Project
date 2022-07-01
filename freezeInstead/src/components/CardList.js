@@ -107,7 +107,7 @@ export default function CardList({ nftCard }) {
                       {saleApprovalStatus}
                     </button>
                     <div>
-                      <SaleModal cardId={nftCard.id} />
+                      <SaleModal cardId={nftCard.infos.id} />
                     </div>
                   </>
                 ) : (
