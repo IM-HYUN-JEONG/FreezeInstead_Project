@@ -35,32 +35,33 @@ bignumber는 임의 정밀도 산술을 위한 JavaScript 라이브러리이며 
 <hr />
 
 ## 폴더구조
-📦src<br />
- ┣ 📂ABI<br />
- ┣ 📂components ➡️ pages에 들어가는 각 컴포넌트들<br /> 
- ┃ ┣ 📜BuyNFT.js<br />
- ┃ ┣ 📜BuyNFTCards.js<br />
- ┃ ┣ 📜CardList.js<br />
- ┃ ┣ 📜ConnectWallet.js<br />
- ┃ ┣ 📜FreezeAmount.js<br />
- ┃ ┣ 📜FreezeBtn.js<br />
- ┃ ┣ 📜FreezingPeriod.js<br />
- ┃ ┣ 📜Header.js<br />
- ┃ ┗ 📜SaleModal.js<br />
- ┣ 📂constants ➡️ 직접 변경해야하는 컴포넌트들 <br />
- ┃ ┣ 📜Address.js<br />
- ┃ ┣ 📜Introduction.js<br />
- ┃ ┣ 📜Notlogin.js<br />
- ┃ ┗ 📜navLinks.js<br />
- ┣ 📂pages<br /> 
- ┃ ┣ 📜_app.js ➞ Header.js <br />
- ┃ ┣ 📜index.js ➞ Introduction.js<br /> 
- ┃ ┣ 📜freeze.js ➞ FreezeAmount.js, FreezingPeriod.js, FreezeBtn.js / Notlogin.js  <br />
- ┃ ┣ 📜nftList.js ➞ CardList.js / Notlogin.js<br /> 
- ┃ ┗ 📜buyNft.js ➞ BuyNFT.js / Notlogin.js <br />
- ┣ 📂styles<br />
- ┗ 📜atoms.js ➡️  <br />
-
+```
+📦src
+ ┣ 📂ABI
+ ┣ 📂components //➡️ pages에 들어가는 각 컴포넌트들
+ ┃ ┣ 📜BuyNFT.js
+ ┃ ┣ 📜BuyNFTCards.js
+ ┃ ┣ 📜CardList.js
+ ┃ ┣ 📜ConnectWallet.js
+ ┃ ┣ 📜FreezeAmount.js
+ ┃ ┣ 📜FreezeBtn.js
+ ┃ ┣ 📜FreezingPeriod.js
+ ┃ ┣ 📜Header.js
+ ┃ ┗ 📜SaleModal.js
+ ┣ 📂constants //➡️ 직접 변경해야하는 컴포넌트들 
+ ┃ ┣ 📜Address.js
+ ┃ ┣ 📜Introduction.js
+ ┃ ┣ 📜Notlogin.js
+ ┃ ┗ 📜navLinks.js
+ ┣ 📂pages
+ ┃ ┣ 📜_app.js //➞ Header.js
+ ┃ ┣ 📜index.js //➞ Introduction.js 
+ ┃ ┣ 📜freeze.js //➞ FreezeAmount.js, FreezingPeriod.js, FreezeBtn.js / Notlogin.js 
+ ┃ ┣ 📜nftList.js //➞ CardList.js / Notlogin.js 
+ ┃ ┗ 📜buyNft.js //➞ BuyNFT.js / Notlogin.js
+ ┣ 📂styles
+ ┗ 📜atoms.js  //➡️ 상태관리
+```
 <hr />
 
 ## 작동 화면
