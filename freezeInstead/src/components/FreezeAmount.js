@@ -8,6 +8,8 @@ import {
 } from "../atoms";
 import styles from "../styles/FreezeAmount.module.css";
 import claImg from "/img/claImg.png";
+import BigNumber from "bignumber.js";
+import { useEffect } from "react";
 
 export default function FreezeAmount() {
   const [claBalance, setClaBalance] = useRecoilState(ClaBalanceState);
@@ -19,13 +21,17 @@ export default function FreezeAmount() {
     setClaFreezeInputAmount(ClaInputAmount);
   };
 
-  (async function getCLABalance() {
+  async function getCLABalance() {
     const currentCLA = await CLATokenContract.methods
       .balanceOf(ConnectAddress)
       .call();
     const CLA = currentCLA / 10 ** 18;
     setClaBalance(CLA);
-  })();
+  }
+
+  useEffect(() => {
+    getCLABalance();
+  }, []);
 
   return (
     <section>

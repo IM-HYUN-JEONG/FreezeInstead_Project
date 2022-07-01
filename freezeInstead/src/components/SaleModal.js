@@ -19,7 +19,6 @@ export default function SaleModal({ cardId }) {
   const KAS = new Caver(window.klaytn);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [price, setPrice] = useState("");
-  const [txHash, setTxHash] = useState(null);
   const ConnectAddress = useRecoilValue(ConnectAddressState).toString();
   const ConnectWalletType = useRecoilValue(ConnectWalletTypeState);
 
@@ -36,17 +35,19 @@ export default function SaleModal({ cardId }) {
           .encodeABI(),
       };
 
-      const gas = await window.ethereum.request({
-        method: "eth_estimateGas",
-        params: [registerOnSaleCardTxParams],
-      });
-
-      await window.ethereum
+      const gas = await window.ethereum
         .request({
-          method: "eth_sendTransaction",
+          method: "eth_estimateGas",
           params: [registerOnSaleCardTxParams],
         })
-        .catch((error) => alert(`Tx problem : ${error}`));
+        .then(
+          window.ethereum
+            .request({
+              method: "eth_sendTransaction",
+              params: [registerOnSaleCardTxParams],
+            })
+            .catch((error) => alert(`Tx problem : ${error}`))
+        );
 
       /***  KAS  ***/
     } else if (ConnectWalletType === "klay") {

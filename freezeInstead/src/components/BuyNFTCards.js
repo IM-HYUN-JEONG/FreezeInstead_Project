@@ -5,7 +5,6 @@ import { ConnectAddressState, ConnectWalletTypeState } from "../atoms";
 import { useRecoilValue } from "recoil";
 import styles from "../styles/TokenList.module.css";
 import { Box, Button } from "@chakra-ui/react";
-
 import {
   Modal,
   ModalOverlay,
@@ -46,23 +45,25 @@ export default function BuyNFTCards({ tokenInfo }) {
         value: `0x${priceToHex}`,
       };
 
-      const gas = await window.ethereum.request({
-        method: "eth_estimateGas",
-        params: [buyNFTTxParams],
-      });
-
-      await window.ethereum
+      const gas = await window.ethereum
         .request({
-          method: "eth_sendTransaction",
+          method: "eth_estimateGas",
           params: [buyNFTTxParams],
         })
-        .then((txHash) => {
-          if (txHash) {
-            setTxHash(txHash);
-            onOpen();
-          }
-        })
-        .catch((error) => alert(`MetaMask Tx problem : ${error}`));
+        .then(
+          window.ethereum
+            .request({
+              method: "eth_sendTransaction",
+              params: [buyNFTTxParams],
+            })
+            .then((txHash) => {
+              if (txHash) {
+                setTxHash(txHash);
+                onOpen();
+              }
+            })
+            .catch((error) => alert(`MetaMask Tx problem : ${error}`))
+        );
 
       /***  KLAYTN  ***/
     } else if (ConnectWalletType == "klay") {

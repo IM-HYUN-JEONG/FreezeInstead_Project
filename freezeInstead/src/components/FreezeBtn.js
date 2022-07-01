@@ -23,10 +23,12 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
+import Caver from "caver-js";
 
 const approveAmount = new BigNumber(10 ** 40).toFixed();
 
 export default function FreezeBtn() {
+  const KAS = new Caver(window.klaytn);
   const ConnectWalletType = useRecoilValue(ConnectWalletTypeState);
   const ClaFreezePeriod = useRecoilValue(ClaFreezePeriodState);
   const [ClaFreezeEndTimeStamp, setClaFreezeEndTimeStamp] = useState("");
@@ -72,23 +74,25 @@ export default function FreezeBtn() {
           .encodeABI(),
       };
 
-      const gas = await window.ethereum.request({
-        method: "eth_estimateGas",
-        params: [approveTxParams],
-      });
-
-      await window.ethereum
+      const gas = await window.ethereum
         .request({
-          method: "eth_sendTransaction",
+          method: "eth_estimateGas",
           params: [approveTxParams],
         })
-        .then((txHash) => {
-          if (txHash) {
-            alert("Please log in again");
-            location.reload();
-          }
-        })
-        .catch((error) => alert(error));
+        .then(
+          window.ethereum
+            .request({
+              method: "eth_sendTransaction",
+              params: [approveTxParams],
+            })
+            .then((txHash) => {
+              if (txHash) {
+                alert("Please log in again");
+                location.reload();
+              }
+            })
+            .catch((error) => alert(error))
+        );
 
       /***  KAS  ***/
     } else if (ConnectWalletType === "klay") {
@@ -96,7 +100,7 @@ export default function FreezeBtn() {
         const response = await KAS.klay.sendTransaction({
           type: "SMART_CONTRACT_EXECUTION",
           from: ConnectAddress,
-          to: SaleTokenAdd,
+          to: CLATokenAdd,
           gas: "3000000",
           data: CLATokenContract.methods
             .approve(FreezeContractAdd, approveAmount)
@@ -125,34 +129,70 @@ export default function FreezeBtn() {
   }, [ConnectAddress]);
 
   async function freezeAmount() {
-    const freezeTxParams = {
-      from: ConnectAddress,
-      to: FreezeContractAdd,
-      gasPrice: "0x3a35294400",
-      gas: gas,
-      data: FreezeContract.methods
-        .freeze(amount, ClaFreezePeriod, startTimeStemp, ClaFreezeEndTimeStamp)
-        .encodeABI(),
-    };
+    /***  METAMASK  ***/
+    if (ConnectWalletType === "eth") {
+      const freezeTxParams = {
+        from: ConnectAddress,
+        to: FreezeContractAdd,
+        gasPrice: "0x3a35294400",
+        gas: gas,
+        data: FreezeContract.methods
+          .freeze(
+            amount,
+            ClaFreezePeriod,
+            startTimeStemp,
+            ClaFreezeEndTimeStamp
+          )
+          .encodeABI(),
+      };
 
-    const gas = await window.ethereum.request({
-      method: "eth_estimateGas",
-      params: [freezeTxParams],
-    });
+      const gas = await window.ethereum
+        .request({
+          method: "eth_estimateGas",
+          params: [freezeTxParams],
+        })
+        .then(
+          window.ethereum
+            .request({
+              method: "eth_sendTransaction",
+              params: [freezeTxParams],
+            })
+            .then((txHash) => {
+              if (txHash) {
+                setTxHash(txHash);
+                onOpen();
+              }
+            })
+            .catch((error) => alert(error))
+        );
 
-    window.ethereum
-      .request({
-        method: "eth_sendTransaction",
-        params: [freezeTxParams],
-      })
-      .then((txHash) => {
-        if (txHash) {
-          //Store Transaction
-          setTxHash(txHash);
+      /***  KAS  ***/
+    } else if (ConnectWalletType === "klay") {
+      try {
+        const response = await KAS.klay.sendTransaction({
+          type: "SMART_CONTRACT_EXECUTION",
+          from: ConnectAddress,
+          to: FreezeContractAdd,
+          gas: "3000000",
+          data: FreezeContract.methods
+            .freeze(
+              amount,
+              ClaFreezePeriod,
+              startTimeStemp,
+              ClaFreezeEndTimeStamp
+            )
+            .encodeABI(),
+        });
+        if (response.status) {
+          setTxHash(response.transactionHash);
+          onOpen();
         }
-      })
-      .then(onOpen)
-      .catch((error) => alert(error));
+      } catch (error) {
+        alert(`Tx problem : ${error}`);
+      }
+    } else {
+      alert("The wallet connection is wrong.");
+    }
   }
 
   async function freezeContractConnect() {

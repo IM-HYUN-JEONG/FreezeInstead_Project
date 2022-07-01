@@ -1,21 +1,21 @@
 import { Box, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import { ConnectAddressState, IsLogInState } from "../atoms";
 import { useRecoilValue } from "recoil";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FreezeNFTContract, SaleTokenContract } from "../constants/Address";
-import TokenList from "../components/TokenList";
+import CardList from "../components/CardList";
 import Notlogin from "../constants/Notlogin";
 import styles from "../styles/TokenList.module.css";
 
 export default function NftList() {
   const isLogin = useRecoilValue(IsLogInState);
   const ConnectAddress = useRecoilValue(ConnectAddressState).toString();
-  const [nftlist, setNftlist] = useState([]);
+  const [nftCardList, setNftCardList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   let arr = [];
 
-  (async function saveMyToken() {
+  async function saveMyToken() {
     const totalSupply = await FreezeNFTContract.methods.totalSupply().call();
 
     for (let i = 0; i <= totalSupply - 1; i++) {
@@ -62,15 +62,18 @@ export default function NftList() {
       arr.push(cards);
     }
 
-    for (let nftCards of arr) {
-      if (String(nftCards[4]).toLowerCase() === ConnectAddress) {
-        setNftlist((prevState) => {
-          return [...prevState, { nftCards }];
+    for (let infos of arr) {
+      if (String(infos[4]).toLowerCase() === ConnectAddress) {
+        setNftCardList((prevState) => {
+          return [...prevState, { infos }];
         });
       }
     }
     setIsLoading(false);
-  })();
+  }
+  useEffect(() => {
+    saveMyToken();
+  }, []);
 
   return (
     <>
@@ -89,9 +92,11 @@ export default function NftList() {
             </Box>
           ) : (
             <>
-              {nftlist.length >= 1 ? (
+              {nftCardList.length >= 1 ? (
                 <>
-                  <TokenList nftlist={nftlist} />
+                  {nftCardList.map((nftCard, i) => {
+                    return <CardList key={i} nftCard={nftCard} />;
+                  })}
                 </>
               ) : (
                 <div className={styles.errorFont}>No NFT</div>

@@ -20,10 +20,10 @@ export default function BuyNFT() {
           const tokenInfo = await SaleTokenContract.methods
             .onSaleTokens(i)
             .call();
-          /* lockClaAmount 설정 */
+          /* lockClaAmount setting */
           tokenInfo.lockClaAmount = Number(tokenInfo.lockClaAmount) / 10 ** 18;
 
-          /* endTimestamp 설정 */
+          /* endTimestamp setting */
           const endTimestamp = new Date(Number(tokenInfo.endTimestamp));
           tokenInfo.endTimestamp =
             endTimestamp.getFullYear() +
