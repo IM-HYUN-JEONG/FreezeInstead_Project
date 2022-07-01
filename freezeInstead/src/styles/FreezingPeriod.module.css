@@ -7,7 +7,6 @@
   border-radius: 4px;
   justify-content: space-between;
   display: flex;
-
   font-size: 12px;
   color: darkgray;
 }
@@ -21,10 +20,10 @@
   padding: 6px;
   cursor: pointer;
 }
-.periodItems :hover {
+.periodItems:hover {
   border: 2px solid #b5b5b5;
 }
-.periodItems :focus {
+.periodItems:focus {
   border: 2px solid #b5b5b5;
 }
 .title {
