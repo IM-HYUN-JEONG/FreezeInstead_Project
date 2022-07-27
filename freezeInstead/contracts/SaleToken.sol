@@ -31,6 +31,7 @@ contract SaleToken {
 
     // tokenId -> price가 나옴 
     mapping(uint => uint) public tokenPrices;
+    
     //어떤것이 판매중인지 배열로 정리함 (push로 추가, pop으로 제거)
     TradeData[] public onSaleTokens;
     TokensData[] public tokenData;
@@ -78,9 +79,11 @@ contract SaleToken {
     function getTokenPrice(uint _tokenId) public view returns (uint) {
         return tokenPrices[_tokenId];
     }
+    
     function getOnSaleTokensLength() public view returns (uint) {
-    return onSaleTokens.length;
+        return onSaleTokens.length;
     }
+    
     function getTokenInfo(uint _tokenId) public view returns(uint, uint, uint, uint, address) {
         uint lockClaAmount = freezeNftAddress.getLockClaAmount(_tokenId);
         uint startTimeStemp = freezeNftAddress.getStartTimestamp(_tokenId);
@@ -95,7 +98,7 @@ contract SaleToken {
         require(balanceLength > 0, "You did not have token.");
 
         TokensData[] memory token = new TokensData[](balanceLength);
-
+        
         uint totalTokensLength = freezeNftAddress.getCardsLength();
         for(uint i = 0; i < totalTokensLength; i++) {
             uint tokenId = freezeNftAddress.tokenOfOwnerByIndex(msg.sender, i);
