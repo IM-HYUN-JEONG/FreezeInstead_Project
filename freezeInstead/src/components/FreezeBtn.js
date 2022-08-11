@@ -146,7 +146,7 @@ export default function FreezeBtn() {
           .encodeABI(),
       };
 
-      const gas = await window.ethereum
+      let gas = await window.ethereum
         .request({
           method: "eth_estimateGas",
           params: [freezeTxParams],
