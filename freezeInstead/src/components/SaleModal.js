@@ -35,7 +35,7 @@ export default function SaleModal({ cardId }) {
           .encodeABI(),
       };
 
-      const gas = await window.ethereum
+      let gas = await window.ethereum
         .request({
           method: "eth_estimateGas",
           params: [registerOnSaleCardTxParams],
