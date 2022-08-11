@@ -45,7 +45,7 @@ export default function BuyNFTCards({ tokenInfo }) {
         value: `0x${priceToHex}`,
       };
 
-      const gas = await window.ethereum
+      let gas = await window.ethereum
         .request({
           method: "eth_estimateGas",
           params: [buyNFTTxParams],
